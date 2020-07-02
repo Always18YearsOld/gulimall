@@ -21,23 +21,23 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.atguigu.gulimall</groupId>
-            <artifactId>gulimall-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
-            <exclusions>
+            <!--<exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-webflux</artifactId>
-                </exclusion>
-            </exclusions>
+&lt;!&ndash;                <exclusion>&ndash;&gt;
+&lt;!&ndash;                    <groupId>org.springframework.boot</groupId>&ndash;&gt;
+&lt;!&ndash;                    <artifactId>spring-boot-starter-webflux</artifactId>&ndash;&gt;
+&lt;!&ndash;                </exclusion>&ndash;&gt;
+            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.22</version>
         </dependency>
 
         <dependency>
@@ -50,6 +50,18 @@
                     <artifactId>junit-vintage-engine</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!--服务的注册发现-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
+        <!--服务的配置管理-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <version>2.2.0.RELEASE</version>
         </dependency>
     </dependencies>
 
