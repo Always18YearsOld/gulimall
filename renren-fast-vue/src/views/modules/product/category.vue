@@ -7,6 +7,8 @@
       show-checkbox
       node-key="catId"
       :default-expanded-keys="expandedKey"
+      draggable
+      :allow-drop="allowDrop"
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
@@ -22,7 +24,12 @@
         </span>
       </span>
     </el-tree>
-    <el-dialog :title="title" :visible.sync="dialogVisible" width="30%" :close-on-click-modal='false'>
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :close-on-click-modal="false"
+    >
       <el-form :model="category">
         <el-form-item label="分类名称">
           <el-input v-model="category.name" autocomplete="off"></el-input>
@@ -52,8 +59,9 @@ export default {
   props: {},
   data() {
     return {
+      maxLevel: 0,
       title: '',
-      dialogType: '',// edit,add
+      dialogType: '', // edit,add
       category: { name: '', parentCid: 0, catLevel: 0, showStatus: 1, sort: 0, catId: null, productUnit: '', icon: '' },
       dialogVisible: false,
       menus: [],
@@ -94,6 +102,31 @@ export default {
       this.category.sort = 0
       this.category.showStatus = 1
     },
+    allowDrop(draggingNode, dropNode, type) {
+      // 被拖动的当前节点及所在的父节点总层数不能大于3
+      // 被拖动的当前节点总层数
+      console.log(draggingNode, dropNode, type)
+      this.countNodeLevel(draggingNode.data)
+      // 当前正在拖动的节点+父节点所在的深度不大于3即可
+      let deep = (this.maxLevel - draggingNode.data.catLevel) + 1
+      console.log('深度', deep)
+      if (type === 'inner') {
+        return (deep + dropNode.level <= 3)
+      } else {
+        return (deep + dropNode.parent.level <= 3)
+      }
+    },
+    countNodeLevel(node) {
+      // 找到所有子节点，求出最大深度
+      if (node.children != null && node.children.length > 0) {
+        for (let i = 0; i < node.children.length; i++) {
+          if (node.children[i].catLevel > this.maxLevel) {
+            this.maxLevel = node.children[i].catLevel
+          }
+          this.countNodeLevel(node.children[i])
+        }
+      }
+    },
     edit(data) {
       console.log('要修改的数据', data)
       this.dialogType = 'edit'
@@ -106,7 +139,7 @@ export default {
         method: 'get'
       }).then(({ data }) => {
         // 请求成功
-        console.log("要回显的数据", data)
+        console.log('要回显的数据', data)
         this.category.name = data.data.name
         this.category.catId = data.data.catId
         this.category.icon = data.data.icon
@@ -146,16 +179,16 @@ export default {
       console.log('remove', node, data)
     },
     submit() {
-      if (this.dialogType == 'add') {
+      if (this.dialogType === 'add') {
         this.addCategory()
       }
-      if (this.dialogType == 'edit') {
+      if (this.dialogType === 'edit') {
         this.editCategory()
       }
     },
     // 修改三级分类
     editCategory() {
-      var { catId, name, icon, productUnit} = this.category
+      var { catId, name, icon, productUnit } = this.category
       var data = { catId, name, icon, productUnit }
       this.$http({
         url: this.$http.adornUrl('/product/category/update'),
