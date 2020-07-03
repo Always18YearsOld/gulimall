@@ -56,6 +56,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return level1Menu;
     }
 
+
+    /**
+     * 这里先留在这，因为不知道业务中什么会引用菜单，只有没有子菜单并且没有引用的时候才能删除
+     * @author: ltb
+     * @date 2020/7/3
+     * @params
+     * @return
+     *
+     */
+    @Override
+    public void removeMenuByIds(List<Long> asList) {
+
+        //TODO 检查当前删除的菜单是否被别的地方引用
+        //这里的删除是直接删除，但是真实开发中一般会选用逻辑删除
+        baseMapper.deleteBatchIds(asList);
+    }
+
     /**
      * 获取当前菜单的子菜单
      *
