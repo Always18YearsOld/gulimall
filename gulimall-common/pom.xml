@@ -51,6 +51,12 @@
             <artifactId>renren-fast</artifactId>
             <version>3.0.0</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.aliyun.oss</groupId>
+                    <artifactId>aliyun-sdk-oss</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--服务的注册发现-->
         <dependency>
