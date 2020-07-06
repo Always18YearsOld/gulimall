@@ -28,11 +28,6 @@ spring:
 
 
 
-
-
-
-
-
         - id: admin_route
           uri: lb://renren-fast
           predicates:
